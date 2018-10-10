@@ -5,6 +5,7 @@ from flask_cors import CORS
 
 from rabbit.rabbit_service import RabbitService
 from utils import config
+from wallet.routes import WallerRoutes
 
 
 class MainApp:
