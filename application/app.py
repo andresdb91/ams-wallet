@@ -3,9 +3,9 @@ import os
 import flask
 from flask_cors import CORS
 
-from rabbit.rabbit_service import RabbitService
 from utils import config
-from wallet.routes import WallerRoutes
+from rabbit import rabbit_service
+from wallet import routes as wallet_routes
 
 
 class MainApp:
@@ -14,15 +14,16 @@ class MainApp:
         self.flask_app = flask.Flask(__name__, static_folder='../public')
         CORS(self.flask_app, support_credentials=True, automatic_options=True)
 
-        self.rabbit = RabbitService()
-        self.rabbit.init()
-
-        self._init_routes()
         self._init_api_doc()
+        self._init_routes()
+        self._init_rabbit()
+        self._init_wallet()
+
+    def _init_api_doc(self):
+        os.system("apidoc -i ./ -o ./public")
 
     def _init_routes(self):
         # Servidor de archivos estáticos de apidoc
-        # Por el momento se genera con ../auth/node_modules/.bin/apidoc -i ./ -o public
         @self.flask_app.route('/<path:path>')
         def api_index(path):
             return flask.send_from_directory('../public', path)
@@ -31,8 +32,11 @@ class MainApp:
         def index():
             return flask.send_from_directory('../public', "index.html")
 
-    def _init_api_doc(self):
-        os.system("apidoc -i ./ -o ./public")
+    def _init_rabbit(self):
+        rabbit_service.init()
+
+    def _init_wallet(self):
+        wallet_routes.init(self.flask_app)
 
     def get_flask_app(self):
         return self.flask_app
