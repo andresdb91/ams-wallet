@@ -1,0 +1,8 @@
+src/.pytest_cache/
+src/__pycache__/
+*.pyc
+python_virtualenv/
+.idea
+activate
+test_data/
+doc/build/
