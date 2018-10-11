@@ -20,7 +20,7 @@ class MainApp:
         self._init_wallet()
 
     def _init_api_doc(self):
-        os.system("apidoc -i ./ -o ./public")
+        os.system("apidoc -i ../ -o ./public")
 
     def _init_routes(self):
         # Servidor de archivos estáticos de apidoc
