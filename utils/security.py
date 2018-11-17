@@ -53,8 +53,8 @@ def validate_party(token, transaction):
     profile = validate_token(token)
 
     if ('id' not in profile
-            or profile['id'] not in [transaction._id_orig,
-                                     transaction._id_dest]):
+            or profile['id'] not in [transaction.get('_id_orig'),
+                                     transaction.get('_id_dest')]):
         raise errors.InvalidAccessLevel()
 
 
