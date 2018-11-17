@@ -8,7 +8,7 @@ services:
       - wallet_rabbitmq
 
   wallet_mongodb:
-    image: mongo:4
+    image: mongo:4-xenial
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongo
@@ -24,7 +24,7 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: mongo
 
   wallet_rabbitmq:
-    image: rabbitmq:3
+    image: rabbitmq:3-alpine
     hostname: wallet_rabbitmq
     restart: always
     environment:
