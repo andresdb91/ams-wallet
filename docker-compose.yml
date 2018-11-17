@@ -6,6 +6,8 @@ services:
     depends_on:
       - wallet_mongodb
       - wallet_rabbitmq
+    ports:
+      - 3101:3101
 
   wallet_mongodb:
     image: mongo:4-xenial
