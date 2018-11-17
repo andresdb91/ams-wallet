@@ -13,3 +13,12 @@ def get_property(name, default):
 
 def get_server_port():
     return int(get_property('ServerPort', 3101))
+
+
+def get_auth_server_url():
+    return get_property('AuthServerUrl', 'localhost')
+
+
+def get_auth_server_port():
+    return int(get_property('AuthServerPort', 3000))
+
