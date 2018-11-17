@@ -21,7 +21,10 @@ def init(flask_app):
                      methods=['GET'])
     def get_wallet_balance(user_id) -> Response:
         try:
-            pass
+            token = request.headers.get('Authorization')
+            security.validate_owner(token, user_id)
+
+            query_service.get_wallet_balance(user_id)
         except Exception as err:
             return handle_error(err)
 
