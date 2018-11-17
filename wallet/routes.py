@@ -88,7 +88,7 @@ def init(flask_app):
     def modify_wallet_status(user_id) -> Response:
         try:
             token = request.headers.get('Authorization')
-            security.validate_admin_role(token)
+            security.validate_owner_or_admin_role(token)
 
             params = json.loads(request.data)
             data = command_service.update_status(user_id, params)

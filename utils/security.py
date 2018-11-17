@@ -48,6 +48,13 @@ def validate_owner(token, wallet_id):
         raise errors.InvalidAccessLevel()
 
 
+def validate_owner_or_admin_role(token, wallet_id):
+    try:
+        validate_owner(token, wallet_id)
+    except errors.InvalidAccessLevel:
+        validate_admin_role(token)
+
+
 def validate_party(token, transaction):
 
     profile = validate_token(token)
