@@ -12,7 +12,7 @@ def update_status(user_id, params):
         wallet = Wallet(user_id=user_id, status='activa')
 
     estado = params.get('estado')
-    if estado:
+    if estado and estado in ['activa', 'suspendida', 'cerrada']:
         wallet.status = estado
         wallet.status_datetime = datetime.now()
         wallet.save()
