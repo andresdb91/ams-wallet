@@ -27,19 +27,21 @@ class MultipleArgumentException(Exception):
 
 
 class InvalidAuth(Exception):
-    def __init__(self, error):
-        self.error = error
-
-    def __str__(self):
-        return repr(self.error)
+    # def __init__(self, error):
+    #     self.error = error
+    #
+    # def __str__(self):
+    #     return repr(self.error)
+    pass
 
 
 class InvalidAccessLevel(Exception):
-    def __init__(self, error):
-        self.error = error
-
-    def __str__(self):
-        return repr(self.error)
+    # def __init__(self, error):
+    #     self.error = error
+    #
+    # def __str__(self):
+    #     return repr(self.error)
+    pass
 
 
 def handle_error(err):
