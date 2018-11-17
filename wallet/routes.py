@@ -1,6 +1,9 @@
 from flask import request, Response
 from decimal import Decimal
 import json
+from utils import security
+from wallet import query_service, command_service
+from utils.errors import handle_error
 
 
 def init(flask_app):
@@ -8,49 +11,65 @@ def init(flask_app):
     # Queries
     @flask_app.route('/v1/wallet/<user_id>/active',
                      methods=['GET'])
-    def get_wallet_status(user_id: int) -> Response:
-        result = None
-        return json.dumps(result)
+    def get_wallet_status(user_id) -> Response:
+        try:
+            query_service.get_wallet_status(user_id)
+        except Exception as err:
+            return handle_error(err)
 
     @flask_app.route('/v1/wallet/<user_id>/balance',
                      methods=['GET'])
-    def get_wallet_balance(user_id: int) -> Response:
-        result = None
-        return json.dumps(result)
+    def get_wallet_balance(user_id) -> Response:
+        try:
+            pass
+        except Exception as err:
+            return handle_error(err)
 
     @flask_app.route('/v1/wallet/<user_id>/check/<amount>',
                      methods=['GET'])
-    def check_wallet_for_amount(user_id: int, amount: Decimal) -> Response:
-        result = None
-        return json.dumps(result)
+    def check_wallet_for_amount(user_id, amount) -> Response:
+        try:
+            pass
+        except Exception as err:
+            return handle_error(err)
 
     @flask_app.route('/v1/wallet/<user_id>/transactions',
                      methods=['GET'])
-    def get_wallet_recent_transactions(user_id: int) -> Response:
-        result = None
-        return json.dumps(result)
+    def get_wallet_recent_transactions(user_id) -> Response:
+        try:
+            pass
+        except Exception as err:
+            return handle_error(err)
 
     @flask_app.route('/v1/wallet/<user_id>/alltransactions',
                      methods=['GET'])
-    def get_wallet_all_transactions(user_id: int) -> Response:
-        result = None
-        return json.dumps(result)
+    def get_wallet_all_transactions(user_id) -> Response:
+        try:
+            pass
+        except Exception as err:
+            return handle_error(err)
 
     @flask_app.route('/v1/wallet/transaction/<transaction_id>',
                      methods=['GET'])
-    def check_transaction_status(transaction_id: int) -> Response:
-        result = None
-        return json.dumps(result)
+    def check_transaction_status(transaction_id) -> Response:
+        try:
+            pass
+        except Exception as err:
+            return handle_error(err)
 
     # Commands
     @flask_app.route('/v1/wallet/<user_id>/active',
                      methods=['POST'])
-    def modify_wallet_status(user_id: int) -> Response:
-        result = None
-        return json.dumps(result)
+    def modify_wallet_status(user_id) -> Response:
+        try:
+            params = json.loads(request.data)
+        except Exception as err:
+            return handle_error(err)
 
     @flask_app.route('/v1/wallet/transaction',
                      methods=['POST'])
     def create_transaction() -> Response:
-        result = None
-        return json.dumps(result)
+        try:
+            pass
+        except Exception as err:
+            return handle_error(err)
