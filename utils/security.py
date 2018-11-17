@@ -40,11 +40,11 @@ def validate_admin_role(token):
         raise errors.InvalidAccessLevel()
 
 
-def validate_owner(token, wallet):
+def validate_owner(token, wallet_id):
 
     profile = validate_token(token)
 
-    if 'id' not in profile or wallet.id != profile['id']:
+    if 'id' not in profile or wallet_id != profile['id']:
         raise errors.InvalidAccessLevel()
 
 
