@@ -1,7 +1,0 @@
-{
-  "name": "Wallet Service",
-  "version": "0.1",
-  "description": "Mantiene, informa, carga, transfiere y debita crédito de billeteras virtuales asignadas a los usuarios, a través de transacciones",
-  "title": "Microservicio de billetera virtual",
-  "url": ""
-}
