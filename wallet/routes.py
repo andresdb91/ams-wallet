@@ -5,68 +5,34 @@ import json
 
 def init(flask_app):
 
-    @flask_app.route('/v1/wallet/status',
+    # Queries
+    @flask_app.route('/v1/wallet/<user_id>/active',
                      methods=['GET'])
-    def check_status() -> Response:
-        return Response('Status OK', 200)
+    def get_wallet_status(user_id: int) -> Response:
+        result = None
+        return json.dumps(result)
 
-    @flask_app.route('/v1/wallet/user/<user_id>',
+    @flask_app.route('/v1/wallet/<user_id>/balance',
                      methods=['GET'])
-    def get_user_wallet_id(user_id: int) -> Response:
+    def get_wallet_balance(user_id: int) -> Response:
         result = None
         return json.dumps(result)
 
-    @flask_app.route('/v1/wallet/user/<user_id>',
-                     methods=['POST'])
-    def create_user_wallet(user_id: int) -> Response:
-        result = None
-        return json.dumps(result)
-
-    @flask_app.route('/v1/wallet/<wallet_id>/status',
+    @flask_app.route('/v1/wallet/<user_id>/check/<amount>',
                      methods=['GET'])
-    def get_wallet_status(wallet_id: int) -> Response:
+    def check_wallet_for_amount(user_id: int, amount: Decimal) -> Response:
         result = None
         return json.dumps(result)
 
-    @flask_app.route('/v1/wallet/<wallet_id>/status',
-                     methods=['POST'])
-    def modify_wallet_status(wallet_id: int) -> Response:
-        result = None
-        return json.dumps(result)
-
-    @flask_app.route('/v1/wallet/<wallet_id>/public',
+    @flask_app.route('/v1/wallet/<user_id>/transactions',
                      methods=['GET'])
-    def get_wallet_public_info(wallet_id: int) -> Response:
+    def get_wallet_recent_transactions(user_id: int) -> Response:
         result = None
         return json.dumps(result)
 
-    @flask_app.route('/v1/wallet/<wallet_id>/balance',
+    @flask_app.route('/v1/wallet/<user_id>/alltransactions',
                      methods=['GET'])
-    def get_wallet_balance(wallet_id: int) -> Response:
-        result = None
-        return json.dumps(result)
-
-    @flask_app.route('/v1/wallet/<wallet_id>/check/<amount>',
-                     methods=['GET'])
-    def check_wallet_for_amount(wallet_id: int, amount: Decimal) -> Response:
-        result = None
-        return json.dumps(result)
-
-    @flask_app.route('/v1/wallet/<wallet_id>/alltransactions',
-                     methods=['GET'])
-    def get_wallet_all_transactions(wallet_id: int) -> Response:
-        result = None
-        return json.dumps(result)
-
-    @flask_app.route('/v1/wallet/<wallet_id>/transactions',
-                     methods=['GET'])
-    def get_wallet_recent_transactions(wallet_id: int) -> Response:
-        result = None
-        return json.dumps(result)
-
-    @flask_app.route('/v1/wallet/transaction',
-                     methods=['POST'])
-    def create_transaction() -> Response:
+    def get_wallet_all_transactions(user_id: int) -> Response:
         result = None
         return json.dumps(result)
 
@@ -76,14 +42,15 @@ def init(flask_app):
         result = None
         return json.dumps(result)
 
-    @flask_app.route('/v1/wallet/transaction/<transaction_id>',
-                     methods=['DELETE'])
-    def cancel_transaction(transaction_id: int) -> Response:
+    # Commands
+    @flask_app.route('/v1/wallet/<user_id>/active',
+                     methods=['POST'])
+    def modify_wallet_status(user_id: int) -> Response:
         result = None
         return json.dumps(result)
 
-    @flask_app.route('/v1/wallet/transaction/<transaction_id>',
+    @flask_app.route('/v1/wallet/transaction',
                      methods=['POST'])
-    def revert_transaction(transaction_id: int) -> Response:
+    def create_transaction() -> Response:
         result = None
         return json.dumps(result)
