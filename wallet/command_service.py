@@ -1,5 +1,5 @@
 
-def update_status(params):
+def update_status(user_id, params):
     pass
 
 
