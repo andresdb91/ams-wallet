@@ -3,7 +3,7 @@ from decimal import Decimal
 import json
 from utils import security
 from wallet import query_service, command_service
-from utils.errors import handle_error, InvalidAuth
+from utils.errors import handle_error
 
 
 def init(flask_app):
