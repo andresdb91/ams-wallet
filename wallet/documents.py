@@ -13,7 +13,8 @@ class Wallet(Document):
 
 
 class Transaction(Document):
-    transaction_id = fields.IntField(required=True)
+    # transaction_id = fields.IntField(required=True)
+    transaction_id = fields.SequenceField(required=True)
     transaction_type = fields.StringField(required=True)
     wallet_src = fields.IntField()
     wallet_dst = fields.IntField()
