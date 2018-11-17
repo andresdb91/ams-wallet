@@ -8,8 +8,8 @@ def update_status(user_id, params):
 
     wallet = Wallet.objects(user_id=int(user_id))
 
-    if not wallet or len(wallet) > 1:
-        raise errors.InvalidArgument(user_id)
+    if not wallet:
+        wallet = Wallet(user_id=user_id, status='activa')
 
     estado = params.get('estado')
     if estado:
