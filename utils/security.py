@@ -48,6 +48,16 @@ def validate_owner(token, wallet_id):
         raise errors.InvalidAccessLevel()
 
 
+def validate_party(token, transaction):
+
+    profile = validate_token(token)
+
+    if ('id' not in profile
+            or profile['id'] not in [transaction.wallet_src,
+                                     transaction.wallet_dst]):
+        raise errors.InvalidAccessLevel()
+
+
 def invalidate_session(token):
 
     if isinstance(token, str) and validate_token.exists((token, )):
