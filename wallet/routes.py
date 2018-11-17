@@ -87,7 +87,12 @@ def init(flask_app):
                      methods=['POST'])
     def modify_wallet_status(user_id) -> Response:
         try:
+            token = request.headers.get('Authorization')
+            security.validate_admin_role(token)
+
             params = json.loads(request.data)
+            data = command_service.update_status(params)
+            return json.dumps(data)
         except Exception as err:
             return handle_error(err)
 
@@ -95,6 +100,11 @@ def init(flask_app):
                      methods=['POST'])
     def create_transaction() -> Response:
         try:
-            pass
+            token = request.headers.get('Authorization')
+            params = json.loads(request.data)
+            security.validate_party(token, params)
+
+            data = command_service.create_transaction(params)
+            return json.dumps(data)
         except Exception as err:
             return handle_error(err)
