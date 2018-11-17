@@ -3,7 +3,7 @@ from decimal import Decimal
 import json
 from utils import security
 from wallet import query_service, command_service
-from utils.errors import handle_error
+from utils.errors import handle_error, InvalidAuth
 
 
 def init(flask_app):
@@ -68,7 +68,13 @@ def init(flask_app):
                      methods=['GET'])
     def check_transaction_status(transaction_id) -> Response:
         try:
-            pass
+            token = request.headers.get('Authorization')
+
+            data = query_service.get_transaction(transaction_id)
+
+            security.validate_party(token, data)
+
+            return json.dumps(data)
         except Exception as err:
             return handle_error(err)
 
