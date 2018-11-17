@@ -44,7 +44,11 @@ def init(flask_app):
                      methods=['GET'])
     def get_wallet_recent_transactions(user_id) -> Response:
         try:
-            pass
+            token = request.headers.get('Authorization')
+            security.validate_owner(token, user_id)
+
+            data = query_service.get_wallet_recent_transactions(user_id)
+            return json.dumps(data)
         except Exception as err:
             return handle_error(err)
 
@@ -52,7 +56,11 @@ def init(flask_app):
                      methods=['GET'])
     def get_wallet_all_transactions(user_id) -> Response:
         try:
-            pass
+            token = request.headers.get('Authorization')
+            security.validate_owner(token, user_id)
+
+            data = query_service.get_wallet_all_transactions(user_id)
+            return json.dumps(data)
         except Exception as err:
             return handle_error(err)
 
