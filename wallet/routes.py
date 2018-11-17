@@ -34,7 +34,9 @@ def init(flask_app):
                      methods=['GET'])
     def check_wallet_for_amount(user_id, amount) -> Response:
         try:
-            pass
+            amount = Decimal(amount).quantize(Decimal('1.00'))
+            data = query_service.check_available_amount(user_id, amount)
+            return json.dumps(data)
         except Exception as err:
             return handle_error(err)
 
