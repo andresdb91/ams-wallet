@@ -2,6 +2,6 @@ Flask==1.0.2
 mongoengine==0.15.3
 pika==0.12.0
 pymongo==3.7.2
-requests==2.19.1
+requests==2.20.1
 Flask-Cors==3.0.6
 PyMemoize==1.0.3
