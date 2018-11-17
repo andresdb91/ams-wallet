@@ -91,7 +91,7 @@ def init(flask_app):
             security.validate_admin_role(token)
 
             params = json.loads(request.data)
-            data = command_service.update_status(params)
+            data = command_service.update_status(user_id, params)
             return json.dumps(data)
         except Exception as err:
             return handle_error(err)
