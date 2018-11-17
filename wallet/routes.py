@@ -13,7 +13,8 @@ def init(flask_app):
                      methods=['GET'])
     def get_wallet_status(user_id) -> Response:
         try:
-            query_service.get_wallet_status(user_id)
+            data = query_service.get_wallet_status(user_id)
+            return json.dumps(data)
         except Exception as err:
             return handle_error(err)
 
@@ -24,7 +25,8 @@ def init(flask_app):
             token = request.headers.get('Authorization')
             security.validate_owner(token, user_id)
 
-            query_service.get_wallet_balance(user_id)
+            data = query_service.get_wallet_balance(user_id)
+            return json.dumps(data)
         except Exception as err:
             return handle_error(err)
 
