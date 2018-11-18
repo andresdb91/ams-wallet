@@ -50,7 +50,26 @@ def get_wallet_balance(user_id):
 
 
 def check_available_amount(user_id, amount):
-    pass
+    wallet = Wallet.objects(user_id=user_id).limit(1)
+
+    if not wallet:
+        return {
+            '_id': user_id,
+            'amount_check': False
+        }
+
+    _, cons_date, cons_balance = get_last_consolidation_info(wallet)
+    balance, _ = get_balance(wallet, cons_date, cons_balance)
+
+    if amount <= balance:
+        check = True
+    else:
+        check = False
+
+    return {
+        '_id': wallet.user_id,
+        'amount_check': check
+    }
 
 
 def get_wallet_recent_transactions(user_id):
