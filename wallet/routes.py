@@ -90,7 +90,7 @@ def init(flask_app):
             token = request.headers.get('Authorization')
             security.validate_owner_or_admin_role(token)
 
-            params = json.loads(request.data)
+            params = json.loads(request.data.decode())
             data = command_service.update_status(user_id, params)
             return json.dumps(data)
         except Exception as err:
