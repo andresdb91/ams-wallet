@@ -10,17 +10,9 @@ def init():
     port = config.get_db_server_port()
     connect(
         'ecommerce-wallet',
-        host='wallet_mongodb',
-        port=27017,
-        username='mongo',
-        password='mongo',
-        authentication_source='admin'
+        host=host,
+        port=port
     )
-    # connect(
-    #     'ecommerce-wallet',
-    #     host=host,
-    #     port=port
-    # )
 
 
 class Wallet(Document):
@@ -30,7 +22,6 @@ class Wallet(Document):
 
 
 class Transaction(Document):
-    # transaction_id = fields.IntField(required=True)
     _id = fields.ObjectIdField(required=True, default=fields.ObjectId)
     transaction_type = fields.StringField(required=True)
     wallet_src = fields.ObjectIdField()
