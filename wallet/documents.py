@@ -31,9 +31,9 @@ class Wallet(Document):
 
 class Transaction(Document):
     # transaction_id = fields.IntField(required=True)
-    transaction_id = fields.SequenceField(required=True)
+    _id = fields.ObjectIdField(required=True, default=fields.ObjectId)
     transaction_type = fields.StringField(required=True)
-    wallet_src = fields.IntField()
-    wallet_dst = fields.IntField()
+    wallet_src = fields.ObjectIdField()
+    wallet_dst = fields.ObjectIdField()
     amount = fields.DecimalField(required=True, force_string=True, precision=2)
     transaction_dt = fields.DateTimeField(default=datetime.now)
