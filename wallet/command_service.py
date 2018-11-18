@@ -19,6 +19,8 @@ def update_status(user_id, params):
     else:
         raise errors.InvalidArgument(params)
 
+    wallet.save()
+
     return {
         '_id': wallet.user_id,
         'estado': wallet.status
@@ -73,6 +75,7 @@ def create_transaction(params):
         raise errors.InvalidArgument(tr_type)
 
     transaction.save()
+    wallet_dst.save()
 
     return {
         '_id': transaction.transaction_id,
