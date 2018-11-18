@@ -77,7 +77,36 @@ def get_wallet_recent_transactions(user_id):
 
 
 def get_wallet_all_transactions(user_id):
-    pass
+    wallet = Wallet.objects(user_id=user_id).limit(1)
+
+    if not wallet:
+        return {[]}
+
+    transaction_out = Transaction.objects(wallet_src=user_id).all()
+    transaction_in = Transaction.objects(wallet_dst=user_id,
+                                         transaction_type='carga').all()
+
+    transactions = []
+    for tr in transaction_in:
+        transactions.append({
+            '_id': tr.transaction_id,
+            'created': tr.transaction_dt,
+            '_id_orig': tr.wallet_src,
+            '_id_dest': tr.wallet_dst,
+            'amount': tr.amount,
+            'type': tr.transaction_type
+        })
+    for tr in transaction_out:
+        transactions.append({
+            '_id': tr.transaction_id,
+            'created': tr.transaction_dt,
+            '_id_orig': tr.wallet_src,
+            '_id_dest': tr.wallet_dst,
+            'amount': tr.amount,
+            'type': tr.transaction_type
+        })
+
+    return transactions
 
 
 def get_transaction(transaction_id):
