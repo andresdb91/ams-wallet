@@ -2,8 +2,25 @@ from mongoengine import Document
 from mongoengine import fields
 from mongoengine import connect
 from datetime import datetime
+from utils import config
 
-connect('ecommerce-wallet', host='wallet_mongodb', port=27017)
+
+def init():
+    host = config.get_db_server_url()
+    port = config.get_db_server_port()
+    connect(
+        'ecommerce-wallet',
+        host='wallet_mongodb',
+        port=27017,
+        username='mongo',
+        password='mongo',
+        authentication_source='admin'
+    )
+    # connect(
+    #     'ecommerce-wallet',
+    #     host=host,
+    #     port=port
+    # )
 
 
 class Wallet(Document):

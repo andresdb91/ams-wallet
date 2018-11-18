@@ -5,10 +5,13 @@ from flask_cors import CORS
 
 from utils import config
 from rabbit import rabbit_service
+from wallet import documents
 from wallet import routes as wallet_routes
 
 
 class MainApp:
+
+    instance = None
 
     def __init__(self):
         # self.flask_app = flask.Flask(__name__, static_folder='../public')
@@ -17,8 +20,11 @@ class MainApp:
 
         # self._init_api_doc()
         # self._init_routes()
+        self._init_mongo()
         self._init_rabbit()
         self._init_wallet()
+
+        MainApp.instance = self.flask_app
 
     # def _init_api_doc(self):
     #     os.system("apidoc -i ../ -o ../public")
@@ -32,6 +38,9 @@ class MainApp:
     #     @self.flask_app.route('/')
     #     def index():
     #         return flask.send_from_directory('../public', "index.html")
+
+    def _init_mongo(self):
+        documents.init()
 
     def _init_rabbit(self):
         rabbit_service.init()
