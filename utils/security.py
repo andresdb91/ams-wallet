@@ -17,9 +17,9 @@ def validate_token(token):
 
     host = config.get_auth_server_url()
     port = config.get_auth_server_port()
-    auth_url = ':'.join([host, port])
+    auth_url = ':'.join([host, str(port)])
 
-    response = requests.get('/'.join([auth_url, '/v1/users/current']),
+    response = requests.get('/'.join(['http:/', auth_url, 'v1/users/current']),
                             headers=headers)
 
     if response.status_code != 200:
