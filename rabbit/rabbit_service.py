@@ -1,39 +1,43 @@
+import json
+from threading import Thread, Timer
+
 import pika
-import threading
+
+from utils import config
+from utils import security
 
 
 def init():
-    init_auth_listeners()
-    init_order_listeners()
-
-
-def init_auth_listeners():
-    pass
-
-
-def init_order_listeners():
-    pass
+    t = Thread(target=listen_auth_logout, daemon=True)
+    t.start()
 
 
 def listen_auth_logout():
-    pass
+    exchange = 'auth'
 
+    try:
+        conn = pika.BlockingConnection(
+            pika.ConnectionParameters(host=config.get_rabbit_server_url())
+        )
 
-def listen_order_cancel():
-    pass
+        chan = conn.channel()
+        chan.exchange_declare(exchange=exchange, exchange_type='fanout')
 
+        result = chan.queue_declare(exclusive=True)
+        queue_name = result.method.queue
 
-def listen_order_validate():
-    pass
+        chan.queue_bind(exchange=exchange, queue=queue_name)
 
+        def callback(ch, method, properties, body):
+            event = json.loads(body.decode())
 
-def send_transaction_validate():
-    pass
+            if event.get('type', 'None') == 'logout':
+                security.invalidate_session(event.get('message'))
 
+        chan.basic_consume(callback, queue=queue_name, no_ack=True)
 
-def send_transaction_failed():
-    pass
+        chan.start_consuming()
 
-
-def send_service_restart():
-    pass
+    except Exception as e:
+        print(e)
+        Timer(10.0, init).start()
