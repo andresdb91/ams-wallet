@@ -37,10 +37,14 @@ def create_transaction(params):
 
     if src_id:
         wallet_src = Wallet.objects(user_id=src_id).first()
+    else:
+        wallet_src = None
 
     if dst_id:
         wallet_dst = (Wallet.objects(user_id=dst_id).first()
                       or Wallet(user_id=dst_id, status='activa'))
+    else:
+        wallet_dst = None
 
     if not amount:
         raise errors.InvalidArgument(amount)
