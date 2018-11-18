@@ -4,16 +4,20 @@ from wallet.documents import Transaction, Wallet
 
 
 def get_wallet_status(user_id):
-    wallet = Wallet.objects(user_id=user_id) or Wallet(user_id=user_id,
-                                                       estado='active')
+    wallet = Wallet.objects(user_id=user_id)
 
-    wallet.save()
-
-    return {
-        '_id': wallet.user_id,
-        'estado': wallet.status,
-        'updated': wallet.status_datetime
-    }
+    if not wallet:
+        return {
+            '_id': None,
+            'estado': 'not found',
+            'updated': None
+        }
+    else:
+        return {
+            '_id': wallet.user_id,
+            'estado': wallet.status,
+            'updated': wallet.status_datetime
+        }
 
 
 def get_wallet_balance(user_id):
