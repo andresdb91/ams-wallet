@@ -22,3 +22,6 @@ def get_auth_server_url():
 def get_auth_server_port():
     return int(get_property('AuthServerPort', 3000))
 
+
+def get_rabbit_server_url():
+    return get_property('RabbitServerUrl', 'localhost')
