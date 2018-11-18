@@ -51,5 +51,12 @@ class MainApp:
     def get_flask_app(self):
         return self.flask_app
 
-    def start(self):
-        self.flask_app.run(port=config.get_server_port())
+    def start(self, debug=True):
+        self.flask_app.run(port=config.get_server_port(), debug=debug)
+
+    @staticmethod
+    def wsgi(*args):
+        if not MainApp.instance:
+            MainApp()
+
+        return MainApp.instance(*args)
