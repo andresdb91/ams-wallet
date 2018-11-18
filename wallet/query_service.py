@@ -77,19 +77,33 @@ def get_wallet_recent_transactions(user_id):
     wallet = Wallet.objects(user_id=user_id).first()
 
     if not wallet:
-        return {[]}
+        return [{}]
 
     _, cons_date, _ = get_last_consolidation_info(wallet)
 
-    transaction_in = Transaction.objects(
-        wallet_src=wallet,
-        transaction_dt__gt=cons_date
+    debitos = Transaction.objects(
+        wallet_src=wallet.user_id,
+        transaction_dt__gt=cons_date,
+        transaction_type='debito'
     ).all()
-    transaction_out = Transaction.objects(
-        wallet_dst=wallet,
-        transaction_type='debito',
-        transaction_dt__gt=cons_date
+    transf_out = Transaction.objects(
+        wallet_src=wallet.user_id,
+        transaction_dt__gt=cons_date,
+        transaction_type='transferencia'
     ).all()
+    transaction_out = list(debitos) + list(transf_out)
+
+    cargas = Transaction.objects(
+        wallet_dst=wallet.user_id,
+        transaction_dt__gt=cons_date,
+        transaction_type='carga'
+    ).all()
+    transf_in = Transaction.objects(
+        wallet_dst=wallet.user_id,
+        transaction_dt__gt=cons_date,
+        transaction_type='transferencia'
+    ).all()
+    transaction_in = list(cargas) + list(transf_in)
 
     transactions = []
     for tr in transaction_in:
@@ -118,11 +132,27 @@ def get_wallet_all_transactions(user_id):
     wallet = Wallet.objects(user_id=user_id).first()
 
     if not wallet:
-        return {[]}
+        return [{}]
 
-    transaction_out = Transaction.objects(wallet_src=user_id).all()
-    transaction_in = Transaction.objects(wallet_dst=user_id,
-                                         transaction_type='carga').all()
+    debitos = Transaction.objects(
+        wallet_src=wallet.user_id,
+        transaction_type='debito'
+    ).all()
+    transf_out = Transaction.objects(
+        wallet_src=wallet.user_id,
+        transaction_type='transferencia'
+    ).all()
+    transaction_out = list(debitos) + list(transf_out)
+
+    cargas = Transaction.objects(
+        wallet_dst=wallet.user_id,
+        transaction_type='carga'
+    ).all()
+    transf_in = Transaction.objects(
+        wallet_dst=wallet.user_id,
+        transaction_type='transferencia'
+    ).all()
+    transaction_in = list(cargas) + list(transf_in)
 
     transactions = []
     for tr in transaction_in:
@@ -165,27 +195,41 @@ def get_transaction(transaction_id):
 
 def get_balance(wallet, cons_date, cons_balance):
 
-    transactions_from = Transaction.objects(
-        wallet_src=wallet,
-        transaction_dt__gt=cons_date
+    debitos = Transaction.objects(
+        wallet_src=wallet.user_id,
+        transaction_dt__gt=cons_date,
+        transaction_type='debito'
     ).all()
-    transactions_to = Transaction.objects(
-        wallet_dst=wallet,
-        transaction_type='debito',
-        transaction_dt__gt=cons_date
+    transf_out = Transaction.objects(
+        wallet_src=wallet.user_id,
+        transaction_dt__gt=cons_date,
+        transaction_type='transferencia'
     ).all()
+    transaction_out = list(debitos) + list(transf_out)
+
+    cargas = Transaction.objects(
+        wallet_dst=wallet.user_id,
+        transaction_dt__gt=cons_date,
+        transaction_type='carga'
+    ).all()
+    transf_in = Transaction.objects(
+        wallet_dst=wallet.user_id,
+        transaction_dt__gt=cons_date,
+        transaction_type='transferencia'
+    ).all()
+    transaction_in = list(cargas) + list(transf_in)
 
     balance = cons_balance
 
     last_transaction = None
 
-    for tr_out in transactions_from:
+    for tr_out in transaction_out:
         balance -= tr_out.amount
         if (last_transaction
                 and last_transaction.transaction_dt < tr_out.transaction_dt):
             last_transaction = tr_out
 
-    for tr_in in transactions_to:
+    for tr_in in transaction_in:
         balance += tr_in.amount
         if (last_transaction
                 and last_transaction.transaction_dt < tr_in.transaction_dt):
@@ -197,7 +241,7 @@ def get_balance(wallet, cons_date, cons_balance):
 def get_last_consolidation_info(wallet):
 
     consolidation = Transaction.objects(
-        wallet_dst=wallet,
+        wallet_dst=wallet.user_id,
         transaction_type='consolidacion'
     ).order_by('-transaction_dt').first()
 
