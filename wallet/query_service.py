@@ -110,7 +110,19 @@ def get_wallet_all_transactions(user_id):
 
 
 def get_transaction(transaction_id):
-    pass
+    transaction = Transaction.objects(transaction_id=transaction_id).limit(1)
+
+    if not transaction:
+        raise errors.InvalidArgument(transaction_id)
+
+    return {
+        '_id': transaction.transaction_id,
+        'created': transaction.transaction_dt,
+        ' _id_orig': transaction.wallet_src,
+        ' _id_dest': transaction.wallet_dst,
+        'amount': transaction.amount,
+        'type': transaction.transaction_type
+    }
 
 
 def get_balance(wallet, cons_date, cons_balance):
