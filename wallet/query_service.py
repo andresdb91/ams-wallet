@@ -1,6 +1,19 @@
+from utils.security import errors
+
+from wallet.documents import Transaction, Wallet
+
 
 def get_wallet_status(user_id):
-    pass
+    wallet = Wallet.objects(user_id=user_id) or Wallet(user_id=user_id,
+                                                       estado='active')
+
+    wallet.save()
+
+    return {
+        '_id': wallet.user_id,
+        'estado': wallet.status,
+        'updated': wallet.status_datetime
+    }
 
 
 def get_wallet_balance(user_id):
