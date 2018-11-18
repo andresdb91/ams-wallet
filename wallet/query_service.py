@@ -7,7 +7,7 @@ from wallet.documents import Transaction, Wallet
 
 
 def get_wallet_status(user_id):
-    wallet = Wallet.objects(user_id=user_id).limit(1)
+    wallet = Wallet.objects(user_id=user_id).first()
 
     if not wallet:
         return {
@@ -17,14 +17,14 @@ def get_wallet_status(user_id):
         }
     else:
         return {
-            '_id': wallet.user_id,
+            '_id': str(wallet.user_id),
             'estado': wallet.status,
-            'updated': wallet.status_datetime
+            'updated': wallet.status_datetime.strftime('%Y-%m-%d %H:%M:%S')
         }
 
 
 def get_wallet_balance(user_id):
-    wallet = Wallet.objects(user_id=user_id).limit(1)
+    wallet = Wallet.objects(user_id=user_id).first()
 
     if not wallet:
         return {
@@ -41,16 +41,17 @@ def get_wallet_balance(user_id):
 
     return {
         '_id': wallet.user_id,
-        'balance': balance,
-        'id_last_trans': last_transaction.transaction_id,
-        'dt_last_trans': last_transaction.transaction_dt,
-        'id_last_cons': cons_id,
-        'dt_last_cons': cons_date
+        'balance': str(balance),
+        'id_last_trans': str(last_transaction._id),
+        'dt_last_trans': last_transaction.transaction_dt
+            .strftime('%Y-%m-%d %H:%M:%S'),
+        'id_last_cons': str(cons_id),
+        'dt_last_cons': cons_date.strftime('%Y-%m-%d')
     }
 
 
 def check_available_amount(user_id, amount):
-    wallet = Wallet.objects(user_id=user_id).limit(1)
+    wallet = Wallet.objects(user_id=user_id).first()
 
     if not wallet:
         return {
@@ -67,13 +68,13 @@ def check_available_amount(user_id, amount):
         check = False
 
     return {
-        '_id': wallet.user_id,
+        '_id': str(wallet.user_id),
         'amount_check': check
     }
 
 
 def get_wallet_recent_transactions(user_id):
-    wallet = Wallet.objects(user_id=user_id).limit(1)
+    wallet = Wallet.objects(user_id=user_id).first()
 
     if not wallet:
         return {[]}
@@ -93,20 +94,20 @@ def get_wallet_recent_transactions(user_id):
     transactions = []
     for tr in transaction_in:
         transactions.append({
-            '_id': tr.transaction_id,
-            'created': tr.transaction_dt,
-            '_id_orig': tr.wallet_src,
-            '_id_dest': tr.wallet_dst,
-            'amount': tr.amount,
+            '_id': str(tr._id),
+            'created': tr.transaction_dt.strftime('%Y-%m-%d %H:%M:%S'),
+            '_id_orig': str(tr.wallet_src),
+            '_id_dest': str(tr.wallet_dst),
+            'amount': str(tr.amount),
             'type': tr.transaction_type
         })
     for tr in transaction_out:
         transactions.append({
-            '_id': tr.transaction_id,
-            'created': tr.transaction_dt,
-            '_id_orig': tr.wallet_src,
-            '_id_dest': tr.wallet_dst,
-            'amount': tr.amount,
+            '_id': str(tr._id),
+            'created': tr.transaction_dt.strftime('%Y-%m-%d %H:%M:%S'),
+            '_id_orig': str(tr.wallet_src),
+            '_id_dest': str(tr.wallet_dst),
+            'amount': str(tr.amount),
             'type': tr.transaction_type
         })
 
@@ -114,7 +115,7 @@ def get_wallet_recent_transactions(user_id):
 
 
 def get_wallet_all_transactions(user_id):
-    wallet = Wallet.objects(user_id=user_id).limit(1)
+    wallet = Wallet.objects(user_id=user_id).first()
 
     if not wallet:
         return {[]}
@@ -126,20 +127,20 @@ def get_wallet_all_transactions(user_id):
     transactions = []
     for tr in transaction_in:
         transactions.append({
-            '_id': tr.transaction_id,
-            'created': tr.transaction_dt,
-            '_id_orig': tr.wallet_src,
-            '_id_dest': tr.wallet_dst,
-            'amount': tr.amount,
+            '_id': str(tr._id),
+            'created': tr.transaction_dt.strftime('%Y-%m-%d %H:%M:%S'),
+            '_id_orig': str(tr.wallet_src),
+            '_id_dest': str(tr.wallet_dst),
+            'amount': str(tr.amount),
             'type': tr.transaction_type
         })
     for tr in transaction_out:
         transactions.append({
-            '_id': tr.transaction_id,
-            'created': tr.transaction_dt,
-            '_id_orig': tr.wallet_src,
-            '_id_dest': tr.wallet_dst,
-            'amount': tr.amount,
+            '_id': str(tr._id),
+            'created': tr.transaction_dt.strftime('%Y-%m-%d %H:%M:%S'),
+            '_id_orig': str(tr.wallet_src),
+            '_id_dest': str(tr.wallet_dst),
+            'amount': str(tr.amount),
             'type': tr.transaction_type
         })
 
@@ -147,17 +148,17 @@ def get_wallet_all_transactions(user_id):
 
 
 def get_transaction(transaction_id):
-    transaction = Transaction.objects(transaction_id=transaction_id).limit(1)
+    transaction = Transaction.objects(transaction_id=transaction_id).first()
 
     if not transaction:
         raise errors.InvalidArgument(transaction_id)
 
     return {
-        '_id': transaction.transaction_id,
-        'created': transaction.transaction_dt,
-        ' _id_orig': transaction.wallet_src,
-        ' _id_dest': transaction.wallet_dst,
-        'amount': transaction.amount,
+        '_id': str(transaction._id),
+        'created': transaction.transaction_dt.strftime('%Y-%m-%d %H:%M:%S'),
+        ' _id_orig': str(transaction.wallet_src),
+        ' _id_dest': str(transaction.wallet_dst),
+        'amount': str(transaction.amount),
         'type': transaction.transaction_type
     }
 
@@ -202,7 +203,7 @@ def get_last_consolidation_info(wallet):
 
     if consolidation:
         cons_date = consolidation.transaction_dt
-        cons_id = consolidation.transaction_id
+        cons_id = consolidation._id
         cons_balance = consolidation.amount
     else:
         cons_date = datetime.min
