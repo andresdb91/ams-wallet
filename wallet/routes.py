@@ -101,8 +101,13 @@ def init(flask_app):
     def create_transaction() -> Response:
         try:
             token = request.headers.get('Authorization')
-            params = json.loads(request.data)
-            security.validate_party(token, params)
+            params = json.loads(request.data.decode())
+
+            tipo = params.get('type')
+            if tipo and tipo == 'consolidacion':
+                security.validate_admin_role(token)
+            else:
+                security.validate_party(token, params)
 
             data = command_service.create_transaction(params)
             return json.dumps(data)
