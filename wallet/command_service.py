@@ -6,7 +6,7 @@ from wallet.documents import Transaction, Wallet
 
 def update_status(user_id, params):
 
-    wallet = Wallet.objects(user_id=int(user_id))
+    wallet = Wallet.objects(user_id=int(user_id)).limit(1)
 
     if not wallet:
         wallet = Wallet(user_id=user_id, status='activa')
@@ -34,8 +34,8 @@ def create_transaction(params):
     amount = params.get('amount')
     tr_type = params.get('type')
 
-    wallet_src = Wallet.objects(user_id=src_id)
-    wallet_dst = (Wallet.objects(user_id=dst_id)
+    wallet_src = Wallet.objects(user_id=src_id).limit(1)
+    wallet_dst = (Wallet.objects(user_id=dst_id).limit(1)
                   or Wallet(user_id=dst_id, status='activa'))
 
     if tr_type == 'carga':
