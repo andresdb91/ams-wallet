@@ -18,5 +18,5 @@ class Transaction(Document):
     transaction_type = fields.StringField(required=True)
     wallet_src = fields.IntField()
     wallet_dst = fields.IntField()
-    amount = fields.DecimalField(required=True)
+    amount = fields.DecimalField(required=True, force_string=True, precision=2)
     transaction_dt = fields.DateTimeField(default=datetime.now)
