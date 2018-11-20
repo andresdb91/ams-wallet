@@ -72,11 +72,7 @@ def init(flask_app):
 
             data = query_service.get_transaction(transaction_id)
 
-            sec_data = {
-                '_id_orig': data.wallet_src,
-                '_id_dest': data.wallet_dst,
-            }
-            security.validate_party(token, sec_data)
+            security.validate_party(token, data)
 
             return json.dumps(data)
         except Exception as err:
