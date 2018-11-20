@@ -191,7 +191,7 @@ def get_wallet_all_transactions(user_id):
 
 
 def get_transaction(transaction_id):
-    transaction = Transaction.objects(transaction_id=transaction_id).first()
+    transaction = Transaction.objects(_id=transaction_id).first()
 
     if not transaction:
         raise errors.InvalidArgument(transaction_id)
@@ -199,8 +199,8 @@ def get_transaction(transaction_id):
     return {
         '_id': str(transaction._id),
         'created': transaction.transaction_dt.strftime('%Y-%m-%d %H:%M:%S'),
-        ' _id_orig': str(transaction.wallet_src),
-        ' _id_dest': str(transaction.wallet_dst),
+        '_id_orig': str(transaction.wallet_src),
+        '_id_dest': str(transaction.wallet_dst),
         'amount': str(transaction.amount),
         'type': transaction.transaction_type
     }
