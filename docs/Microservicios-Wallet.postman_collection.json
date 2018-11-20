@@ -1,0 +1,312 @@
+{
+	"info": {
+		"_postman_id": "67ef5697-1274-4812-b62b-85838d972f3f",
+		"name": "Microservicios: Wallet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Query",
+			"item": [
+				{
+					"name": "Verificar estado",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3101/v1/wallet/5bf1b7024c0abc3f84e4f791/active",
+							"host": [
+								"localhost"
+							],
+							"port": "3101",
+							"path": [
+								"v1",
+								"wallet",
+								"5bf1b7024c0abc3f84e4f791",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver transacciones recientes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNWJmMWI3MDI0YzBhYmMzZjg0ZTRmNzkxIiwidG9rZW5faWQiOiI1YmYxYmUxMjRjMGFiYzNmODRlNGY3OTMiLCJpYXQiOjE1NDI1Njk0OTB9.14-KbXPkf3r4-NFXwhEWkZ_tioalbpBhatwmo5seBO4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3101/v1/wallet/5bf1b7024c0abc3f84e4f791/transactions",
+							"host": [
+								"localhost"
+							],
+							"port": "3101",
+							"path": [
+								"v1",
+								"wallet",
+								"5bf1b7024c0abc3f84e4f791",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver transacción",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3101/v1/wallet/transaction/5bf1bf3000df58635c269841",
+							"host": [
+								"localhost"
+							],
+							"port": "3101",
+							"path": [
+								"v1",
+								"wallet",
+								"transaction",
+								"5bf1bf3000df58635c269841"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver saldo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3101/v1/wallet/5bf1b7024c0abc3f84e4f791/balance",
+							"host": [
+								"localhost"
+							],
+							"port": "3101",
+							"path": [
+								"v1",
+								"wallet",
+								"5bf1b7024c0abc3f84e4f791",
+								"balance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar saldo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3101/v1/wallet/5bf1b7024c0abc3f84e4f791/check/145",
+							"host": [
+								"localhost"
+							],
+							"port": "3101",
+							"path": [
+								"v1",
+								"wallet",
+								"5bf1b7024c0abc3f84e4f791",
+								"check",
+								"145"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Command",
+			"item": [
+				{
+					"name": "Crear transaccion (carga)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id_dest\": \"5bf1b7024c0abc3f84e4f791\",\n\t\"amount\": \"140.32\",\n\t\"type\": \"carga\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3101/v1/wallet/transaction",
+							"host": [
+								"localhost"
+							],
+							"port": "3101",
+							"path": [
+								"v1",
+								"wallet",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear transaccion (debito)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id_orig\": \"5bf1b7024c0abc3f84e4f791\",\n\t\"amount\": \"237.20\",\n\t\"type\": \"debito\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3101/v1/wallet/transaction",
+							"host": [
+								"localhost"
+							],
+							"port": "3101",
+							"path": [
+								"v1",
+								"wallet",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear transaccion (transferencia)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"_id_orig\": \"5bf1b7024c0abc3f84e4f791\",\n\t\"_id_dest\": \"5bf1b6f94c0abc3f84e4f78f\",\n\t\"amount\": \"151.00\",\n\t\"type\": \"transferencia\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3101/v1/wallet/transaction",
+							"host": [
+								"localhost"
+							],
+							"port": "3101",
+							"path": [
+								"v1",
+								"wallet",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cambiar estado",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"estado\": \"activa\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3101/v1/wallet/5bf1b7024c0abc3f84e4f791/active",
+							"host": [
+								"localhost"
+							],
+							"port": "3101",
+							"path": [
+								"v1",
+								"wallet",
+								"5bf1b7024c0abc3f84e4f791",
+								"active"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNWJmMWI3MDI0YzBhYmMzZjg0ZTRmNzkxIiwidG9rZW5faWQiOiI1YmYxYjcwMjRjMGFiYzNmODRlNGY3OTIiLCJpYXQiOjE1NDI1Njc2ODJ9.4CHLZq5D7AG1ChtjjVL2joQeyfF_M_tHTzstxbd9z9g",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5ee5344c-8581-4600-a47e-3dae4ad68cb2",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "53d35a96-9c0d-4b1c-9386-dc84f3b42b65",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
