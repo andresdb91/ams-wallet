@@ -39,14 +39,27 @@ def get_wallet_balance(user_id):
     cons_id, cons_date, cons_balance = get_last_consolidation_info(wallet)
     balance, last_transaction = get_balance(wallet, cons_date, cons_balance)
 
+    if last_transaction:
+        lt_id = str(last_transaction._id)
+        lt_dt = last_transaction.dt.strftime('%Y-%m-%d %H:%M:%S')
+    else:
+        lt_id = None
+        lt_dt = None
+
+    if cons_id:
+        cons_id = str(cons_id)
+        cons_date = cons_date.strftime('%Y-%m-%d')
+    else:
+        cons_id = None
+        cons_date = None
+
     return {
-        '_id': wallet.user_id,
+        '_id': str(wallet.user_id),
         'balance': str(balance),
-        'id_last_trans': str(last_transaction._id),
-        'dt_last_trans': last_transaction.transaction_dt
-            .strftime('%Y-%m-%d %H:%M:%S'),
-        'id_last_cons': str(cons_id),
-        'dt_last_cons': cons_date.strftime('%Y-%m-%d')
+        'id_last_trans': lt_id,
+        'dt_last_trans': lt_dt,
+        'id_last_cons': cons_id,
+        'dt_last_cons': cons_date
     }
 
 
