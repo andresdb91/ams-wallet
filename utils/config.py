@@ -26,8 +26,10 @@ def get_auth_server_port():
 def get_rabbit_server_url():
     return get_property('RabbitServerUrl', 'localhost')
 
+
 def get_db_server_url():
     return get_property('DbServerUrl', 'localhost')
 
+
 def get_db_server_port():
-    return get_property('DbServerPort', 27017)
+    return int(get_property('DbServerPort', 27017))
