@@ -84,9 +84,16 @@ def init(flask_app):
     def modify_wallet_status(user_id) -> Response:
         try:
             token = request.headers.get('Authorization')
-            security.validate_owner_or_admin_role(token)
 
             params = json.loads(request.data.decode())
+
+            if params.get('estado') == 'cerrada':
+                security.validate_admin_role(token)
+                params['role'] = 'admin'
+            else:
+                security.validate_owner_or_admin_role(token, user_id)
+                params['role'] = 'user'
+
             data = command_service.update_status(user_id, params)
             return json.dumps(data)
         except Exception as err:

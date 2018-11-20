@@ -7,23 +7,25 @@ from wallet.documents import Transaction, Wallet
 
 def update_status(user_id, params):
 
-    wallet = Wallet.objects(user_id=int(user_id)).first()
+    wallet = Wallet.objects(user_id=user_id).first()
 
     if not wallet:
         wallet = Wallet(user_id=user_id, status='activa')
 
+    rol = params.get('role')
+
     estado = params.get('estado')
-    if estado and estado in ['activa', 'suspendida', 'cerrada']:
+    if estado and (
+            estado in ['activa', 'suspendida']
+            or (estado and estado == 'cerrada' and rol == 'admin')):
         wallet.status = estado
         wallet.status_datetime = datetime.now()
         wallet.save()
     else:
         raise errors.InvalidArgument(params)
 
-    wallet.save()
-
     return {
-        '_id': wallet.user_id,
+        '_id': str(wallet.user_id),
         'estado': wallet.status
     }
 
